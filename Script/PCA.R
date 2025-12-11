@@ -4,12 +4,6 @@ library(ggplot2)
 library(ggbiplot)
 library(car)
 library(here)
-library(showtext)
-library(sysfonts)
-
-#font_add_google('Nanum Gothic', family='NanumGothic')
-#showtext_auto()
-#par(family="NanumGothic")
 
 #Data processing
 df <- read.csv(here("./Data/LPV_Measurement.csv"))
@@ -36,11 +30,10 @@ ggbiplot(prcomp_df,
          obs.scale = 1,
          var.scale = 1) +
   theme_bw() +
+  stat_ellipse(data = data.frame(prcomp_df$x[,1:2], group = df_category),
+               aes(x = PC1, y = PC2, fill = group),
+               geom = "polygon", level = 0.95, alpha = 0.2, inherit.aes = FALSE, show.legend = FALSE) +
   scale_color_discrete(name = '') +
-  scale_color_manual(name = '',
-                     values = c("유견형" = "red",
-                                "육각형" = "blue",
-                                "원형" = "green")) +
   geom_point(aes(color = df_category), size = 3, shape = 16) +
   theme(legend.position = c(0.12, 0.85),
         legend.background = element_rect(size=0.1, colour="black"),
@@ -64,10 +57,9 @@ ggbiplot(prcomp_df,
          obs.scale = 1,
          var.scale = 1) +
   theme_bw() +
-  scale_color_manual(name = '',
-                     values = c("유견형" = "red",
-                                "육각형" = "blue",
-                                "원형" = "green")) +
+  stat_ellipse(data = data.frame(prcomp_df$x[,1:2], group = df_category),
+               aes(x = PC1, y = PC2, fill = group),
+               geom = "polygon", level = 0.95, alpha = 0.2, inherit.aes = FALSE, show.legend = FALSE) +
   geom_point(aes(color = df_category), size = 3, shape = 16) +
   scale_shape_manual(values=c(15, 16, 17)) +
   theme(legend.position = c(0.12, 0.85),
@@ -92,11 +84,10 @@ ggbiplot(prcomp_df,
          obs.scale = 1,
          var.scale = 1) +
   theme_bw() +
+  stat_ellipse(data = data.frame(prcomp_df$x[,1:2], group = df_category),
+               aes(x = PC1, y = PC2, fill = group),
+               geom = "polygon", level = 0.95, alpha = 0.2, inherit.aes = FALSE, show.legend = FALSE) +
   scale_color_discrete(name = '') +
-  scale_color_manual(name = '',
-                     values = c("유견형" = "red",
-                                "육각형" = "blue",
-                                "원형" = "green")) +
   geom_point(aes(color = df_category), size = 3, shape = 16) +
   theme(legend.position = c(0.12, 0.85),
         legend.background = element_rect(size=0.1, colour="black"),
