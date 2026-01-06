@@ -6,7 +6,7 @@ library(car)
 library(here)
 
 #Data processing
-df <- read.csv(here("./Data/LPV_Measurement.csv"))
+df <- read.csv(here("./Data/LPV_Measurement.csv"), fileEncoding = "CP949")
 df <- subset(df, df$세부기종 != "")
 
 df_category <- df$세부기종
