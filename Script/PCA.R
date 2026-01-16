@@ -35,14 +35,16 @@ ggbiplot(prcomp_df,
                geom = "polygon", level = 0.95, alpha = 0.2, inherit.aes = FALSE, show.legend = FALSE) +
   scale_color_discrete(name = '') +
   geom_point(aes(color = df_category), size = 3, shape = 16) +
-  theme(legend.position = c(0.12, 0.85),
+  theme(plot.title = element_text(hjust = 0.5,size=12,face='bold'),
+        legend.position = c(0.12, 0.80),
         legend.background = element_rect(size=0.1, colour="black"),
         legend.margin = margin(5, 10, 5, 5),
         legend.title=element_blank(),
         legend.text=element_text(size=9),
         axis.text = element_text(size=9, colour="black"),
-        axis.title.x = element_text(size=9, colour="black", face='bold'),
-        axis.title.y = element_text(size=9, colour="black", face='bold'))
+        axis.title.x = element_text(size=12, colour="black", face='bold'),
+        axis.title.y = element_text(size=12, colour="black", face='bold')) +
+  ggtitle("백제 한성기 대호 PCA(전체 지표)")
 
 ggsave(here("./Graph/PCA_All.tiff"), dpi=300, width=5, height=5, units='in')
 ggsave(here("./Graph/PCA_All.jpg"), dpi=300, width=5, height=5, units='in')
@@ -62,14 +64,16 @@ ggbiplot(prcomp_df,
                geom = "polygon", level = 0.95, alpha = 0.2, inherit.aes = FALSE, show.legend = FALSE) +
   geom_point(aes(color = df_category), size = 3, shape = 16) +
   scale_shape_manual(values=c(15, 16, 17)) +
-  theme(legend.position = c(0.12, 0.85),
+  theme(plot.title = element_text(hjust = 0.5,size=12,face='bold'),
+        legend.position = c(0.12, 0.80),
         legend.background = element_rect(size=0.1, colour="black"),
         legend.margin = margin(5, 10, 5, 5),
         legend.title=element_blank(),
         legend.text=element_text(size=9),
         axis.text = element_text(size=9, colour="black"),
-        axis.title.x = element_text(size=9, colour="black", face='bold'),
-        axis.title.y = element_text(size=9, colour="black", face='bold'))
+        axis.title.x = element_text(size=12, colour="black", face='bold'),
+        axis.title.y = element_text(size=12, colour="black", face='bold')) +
+  ggtitle("백제 한성기 대호 PCA(기존 지표)")
 
 ggsave(here("./Graph/PCA_M1.tiff"), dpi=300, width=5, height=5, units='in')
 ggsave(here("./Graph/PCA_M1.jpg"), dpi=300, width=5, height=5, units='in')
@@ -89,14 +93,16 @@ ggbiplot(prcomp_df,
                geom = "polygon", level = 0.95, alpha = 0.2, inherit.aes = FALSE, show.legend = FALSE) +
   scale_color_discrete(name = '') +
   geom_point(aes(color = df_category), size = 3, shape = 16) +
-  theme(legend.position = c(0.12, 0.85),
+  theme(plot.title = element_text(hjust = 0.5,size=12,face='bold'),
+        legend.position = c(0.12, 0.85),
         legend.background = element_rect(size=0.1, colour="black"),
         legend.margin = margin(5, 10, 5, 5),
         legend.title=element_blank(),
         legend.text=element_text(size=9),
         axis.text = element_text(size=9, colour="black"),
-        axis.title.x = element_text(size=9, colour="black", face='bold'),
-        axis.title.y = element_text(size=9, colour="black", face='bold'))
+        axis.title.x = element_text(size=12, colour="black", face='bold'),
+        axis.title.y = element_text(size=12, colour="black", face='bold')) +
+  ggtitle("백제 한성기 대호 PCA(개선된 지표)")
 
 ggsave(here("./Graph/PCA_M2.tiff"), dpi=300, width=5, height=5, units='in')
 ggsave(here("./Graph/PCA_M2.jpg"), dpi=300, width=5, height=5, units='in')

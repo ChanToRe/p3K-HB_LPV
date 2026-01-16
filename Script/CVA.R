@@ -1,5 +1,5 @@
 library(Morpho)
-#options(rgl.useNULL = TRUE)
+options(rgl.useNULL = TRUE)
 library(geomorph)
 library(here)
 library(ggplot2)
@@ -28,8 +28,6 @@ ggplot(classifier_pca, aes(x=CVA$CVscores[,1], y=CVA$CVscores[,2])) +
     xlim(-6.5, 6.5) +
     ylim(-6.5, 6.5) +
     scale_shape_manual(values=c(15, 16, 17)) +
-    scale_color_manual(values=c('red', 'blue', 'green')) +
-    scale_fill_manual(values=c('red', 'blue', 'green')) +
     xlab("Canonical Variate 1") +
     ylab("Canonical Variate 2") +
     coord_fixed() +
