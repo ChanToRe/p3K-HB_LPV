@@ -5,27 +5,28 @@ library(here)
 library(ggplot2)
 
 #Data Load & Processing
-data <- readland.tps("./Data/LPV_Landmarks_Curve.TPS", specID = "ID")
+data <- readland.tps("./Data/LPV_Landmark.TPS" , specID = "ID")
 gpa <- gpagen(data)
-TypeData  <- read.csv("./Data/LPV_Measurement.csv", header=T) 
-classifier <- TypeData$Type
+TypeData  <- read.csv(here("./Data/LPV_Measurement.csv"), fileEncoding = "CP949") 
+classifier <- TypeData$세부기종
 
 PCA <- gm.prcomp(data)
 summary(PCA)
 plot(PCA, main = "PCA")
-pc_scores<-PCA[[10]]
-PCA[[10]]
-classifier_pca <- cbind(classifier, pc_scores)
+pc_scores <- PCA[[10]]
+vars <- pc_scores[, 1:110, drop = FALSE]
 
-CVA <- CVA(classifier_pca[3:48], group=classifier$Type)
+classifier_pca <- cbind(Type = classifier, as.data.frame(vars))
+
+CVA <- CVA(vars, group = classifier)
 CVA$Grandm
 ggplot(classifier_pca, aes(x=CVA$CVscores[,1], y=CVA$CVscores[,2])) +
     stat_ellipse(aes(fill=Type), type="norm", level=0.95,
                  geom="polygon", alpha=0.15, color=NA) +
     geom_point(aes(shape=Type, color=Type), size=3) +
     geom_rug(aes(color=Type)) +
-    xlim(-15, 15) +
-    ylim(-15, 15) +
+    xlim(-6.5, 6.5) +
+    ylim(-6.5, 6.5) +
     scale_shape_manual(values=c(15, 16, 17)) +
     scale_color_manual(values=c('red', 'blue', 'green')) +
     scale_fill_manual(values=c('red', 'blue', 'green')) +
@@ -42,14 +43,14 @@ ggplot(classifier_pca, aes(x=CVA$CVscores[,1], y=CVA$CVscores[,2])) +
         axis.text = element_text(size=9, colour="black"),
         axis.title.x = element_text(size=12, colour="black", face='bold'),
         axis.title.y = element_text(size=12, colour="black", face='bold')) +
-    ggtitle("백제 한성기 대옹 CVA 결과")
+    ggtitle("백제 한성기 대호 CVA 결과")
 
 ggsave(here("./Graph/CVA.tiff"), dpi=300, width=6, height=6, units='in')
 ggsave(here("./Graph/CVA.jpeg"), dpi=300, width=6, height=6, units='in')
 
 ########## Mahalanobis distance ##########
-cv_scores <- as.matrix(CVA$CVscores)        # specimens x CVs
-groups <- factor(classifier$Type)
+cv_scores <- as.matrix(CVA$CVscores)
+groups <- factor(classifier)
 
 centroids_df <- aggregate(as.data.frame(cv_scores), by=list(group=groups), FUN=mean)
 centroids_mat <- as.matrix(centroids_df[ , -1])
