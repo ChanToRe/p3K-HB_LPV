@@ -4,11 +4,24 @@ library(geomorph)
 library(here)
 library(ggplot2)
 
-#Data Load & Processing
-data <- readland.tps("./Data/LPV_Landmark.TPS" , specID = "ID")
+# Data processing
+data_all <- readland.tps("./Data/LPV_Landmarks.TPS", specID = "ID")
+TypeData  <- read.csv(here("./Data/LPV_Measurement.csv"), fileEncoding = "UTF-8")
+spec_ids <- dimnames(data_all)[[3]]
+if(is.null(spec_ids)) spec_ids <- as.character(seq_len(dim(data_all)[3]))
+if("ID" %in% names(TypeData)) {
+  td_idx <- match(spec_ids, as.character(TypeData$ID))
+} else {
+  td_idx <- seq_along(spec_ids)
+}
+classifier_all <- as.character(TypeData$세부기종[td_idx])
+keep <- !is.na(classifier_all) & classifier_all != "기타"
+data <- data_all[,,keep, drop = FALSE]
+classifier <- classifier_all[keep]
+TypeData <- TypeData[td_idx[keep], , drop = FALSE]
+
+# PCA
 gpa <- gpagen(data)
-TypeData  <- read.csv(here("./Data/LPV_Measurement.csv"), fileEncoding = "CP949") 
-classifier <- TypeData$세부기종
 
 PCA <- gm.prcomp(data)
 summary(PCA)
@@ -18,11 +31,10 @@ vars <- pc_scores[, 1:110, drop = FALSE]
 
 classifier_pca <- cbind(Type = classifier, as.data.frame(vars))
 
+# CVA
 CVA <- CVA(vars, group = classifier)
 CVA$Grandm
 ggplot(classifier_pca, aes(x=CVA$CVscores[,1], y=CVA$CVscores[,2])) +
-    stat_ellipse(aes(fill=Type), type="norm", level=0.95,
-                 geom="polygon", alpha=0.15, color=NA) +
     geom_point(aes(shape=Type, color=Type), size=3) +
     geom_rug(aes(color=Type)) +
     xlim(-6.5, 6.5) +
