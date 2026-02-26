@@ -1,0 +1,34 @@
+import geopandas as gpd
+import matplotlib.pyplot as plt
+import contextily as ctx
+import pandas as pd
+import pathlib
+from matplotlib_map_utils.core.north_arrow import NorthArrow, north_arrow
+from matplotlib_map_utils.core.scale_bar import ScaleBar, scale_bar
+
+plt.rcParams['font.family'] = 'Malgun Gothic'
+plt.rcParams['axes.unicode_minus'] = False
+
+script_dir = pathlib.Path(__file__).parent
+
+df = pd.read_csv(script_dir.parent / 'Data' / 'LPV_Coordinate.csv')
+df = df[df['세부기종'] != '기타']
+gdf = gpd.GeoDataFrame(df, geometry=gpd.points_from_xy(df['X'], df['Y']))
+gdf.set_crs(epsg=4326, inplace=True)
+
+fig, ax = plt.subplots(figsize=(7.5, 7.5))
+gdf[gdf['세부기종'] == '원형'].plot(ax=ax, color='blue', marker='^', markersize=40, edgecolor='black', linewidth=1, label='원형')
+gdf[gdf['세부기종'] == '장동형'].plot(ax=ax, color='red', marker='o', markersize=40, edgecolor='black', linewidth=1, label='장동형')
+gdf[gdf['세부기종'] == '유견형'].plot(ax=ax, color='green', marker='s', markersize=40, edgecolor='black', linewidth=1, label='유견형')
+ax.legend(title='범례',loc='upper right', frameon=True, edgecolor='black', fontsize=12, title_fontsize=14)
+scale_bar(ax, location="lower right", style="ticks", bar={"projection": gdf.crs})
+north_arrow(ax, location="upper left", rotation={"crs": gdf.crs, "reference": "center"})
+
+api_key = "611f733a-7bf6-4677-a03d-06c21002abb8"
+stadia_provider = ctx.providers.Stadia.StamenTerrainBackground()
+stadia_provider["url"] += "?api_key=" + api_key
+ctx.add_basemap(ax, source=stadia_provider, crs=gdf.crs, attribution="")
+
+plt.savefig(script_dir.parent / 'Graph' / 'Distribution(세부기종별).tiff', dpi=300)
+plt.savefig(script_dir.parent / 'Graph' / 'Distribution(세부기종별).jpg', dpi=300)
+plt.show()
