@@ -29,8 +29,7 @@ ax.legend(title='범례',loc='upper right', frameon=True, edgecolor='black', fon
 scale_bar(ax, location="lower right", style="ticks", bar={"projection": gdf.crs})
 north_arrow(ax, location="upper left", rotation={"crs": gdf.crs, "reference": "center"})
 
-with open(script_dir / 'api_key.txt', 'r') as f:
-    api_key = f.read().strip()
+api_key = 'apikey'
 stadia_provider = ctx.providers.Stadia.StamenTerrainBackground()
 stadia_provider["url"] += "?api_key=" + api_key
 ctx.add_basemap(ax, source=stadia_provider, crs=gdf.crs, attribution="")
