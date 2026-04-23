@@ -12,8 +12,8 @@ df_sub$경부길이 <- df_sub$기고 - df_sub$동체부길이
 
 # 박스플롯 생성
 ggplot(df_sub, aes(x = 형식, y = 경부길이, fill = 형식)) +
-    geom_boxplot() +
-    scale_fill_grey() +
+    geom_boxplot(fatten = 2) +
+    scale_fill_manual(values = c("C1" = "grey90", "C2" = "grey80")) +
     xlab("형식") +
     ylab("경부길이") +
     theme_bw() + 
