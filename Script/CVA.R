@@ -5,8 +5,10 @@ library(here)
 library(ggplot2)
 
 # Data processing
-data_all <- readland.tps("./Data/LPV_Landmarks.TPS", specID = "ID")
+data_all <- readland.tps("./Data/LPV_LM.TPS", specID = "ID")
 TypeData  <- read.csv(here("./Data/LPV_Measurement.csv"), fileEncoding = "UTF-8")
+TypeData <- subset(TypeData, TypeData$형식.내.번호 != "-")
+TypeData <- TypeData[order(TypeData$tps.번호, decreasing = FALSE), ]
 spec_ids <- dimnames(data_all)[[3]]
 if(is.null(spec_ids)) spec_ids <- as.character(seq_len(dim(data_all)[3]))
 if("ID" %in% names(TypeData)) {
@@ -37,8 +39,8 @@ CVA$Grandm
 ggplot(classifier_pca, aes(x=CVA$CVscores[,1], y=CVA$CVscores[,2])) +
     geom_point(aes(shape=Type, color=Type), size=3) +
     geom_rug(aes(color=Type)) +
-    xlim(-6.5, 6.5) +
-    ylim(-6.5, 6.5) +
+    xlim(-10, 20) +
+    ylim(-10, 10) +
     scale_shape_manual(values=c(15, 16, 17)) +
     xlab("Canonical Variate 1") +
     ylab("Canonical Variate 2") +
